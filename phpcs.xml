@@ -28,6 +28,6 @@
 
     <!-- Define files to be checked -->
     <file>includes/</file>
-    <!-- <file>views/</file> -->
+    <file>views/</file>
     <file>post-to-discord.php</file>
 </ruleset>

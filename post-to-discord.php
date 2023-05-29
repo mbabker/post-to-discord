@@ -44,3 +44,6 @@ if ( ! defined( 'POST_TO_DISCORD_VERSION' ) ) {
 require plugin_dir_path( POST_TO_DISCORD_PLUGIN_FILE ) . 'includes/class-post-to-discord-autoloader.php';
 
 Post_To_Discord_Autoloader::register();
+
+// Initialize the plugin instance and resources
+Post_To_Discord_Plugin::boot();
