@@ -1,0 +1,27 @@
+name: 'Build Install Package'
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    name: "Build Install Package"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build package
+        run: ./build-package.sh
+
+      - name: Publish package to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: packaging/post-to-discord.zip

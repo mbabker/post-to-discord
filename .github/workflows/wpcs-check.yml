@@ -1,0 +1,32 @@
+name: 'WPCS Check'
+
+on: [push, pull_request]
+
+jobs:
+  wpcs:
+    runs-on: ubuntu-latest
+
+    name: "WordPress Coding Standards Check"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}-flags-${{ matrix.composer-flags }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          tools: composer:v2, cs2pr
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --prefer-dist --no-suggest
+
+      - name: Check code
+        run: vendor/bin/phpcs -q --report=checkstyle | cs2pr

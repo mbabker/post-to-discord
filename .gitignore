@@ -1,0 +1,6 @@
+# Composer
+/composer.lock
+/vendor
+
+# Packaging Script Output
+/packaging
