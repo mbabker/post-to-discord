@@ -261,7 +261,7 @@ final class Post_To_Discord_Publisher {
 		 * @param string  $webhook_url The Discord webhook URL.
 		 * @param WP_Post $post        The post being published.
 		 */
-		return apply_filters( 'post_to_discord_webook_url', get_option( 'post_to_discord_webhook_url', '' ), $post );
+		return apply_filters( 'post_to_discord_webhook_url', get_option( 'post_to_discord_webhook_url', '' ), $post );
 	}
 
 	private function get_discord_embed_thumbnail( WP_Post $post ): string {
