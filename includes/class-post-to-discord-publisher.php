@@ -31,7 +31,7 @@ final class Post_To_Discord_Publisher {
 			self::$instance = new self();
 
 			foreach ( get_option( 'post_to_discord_supported_post_types', [] ) as $post_type ) {
-				add_action( "publish_$post_type", [ self::$instance, 'publish_to_discord' ], 10, 3 );
+				add_action( "publish_$post_type", [ self::$instance, 'publish_to_discord' ], 10, 2 );
 			}
 		}
 	}
@@ -54,11 +54,10 @@ final class Post_To_Discord_Publisher {
 	/**
 	 * Publishes the post to Discord.
 	 *
-	 * @param int     $post_id    Post ID.
-	 * @param WP_Post $post       Post object.
-	 * @param string  $old_status Old post status.
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post object.
 	 */
-	public function publish_to_discord( int $post_id, WP_Post $post, string $old_status ): void {
+	public function publish_to_discord( int $post_id, WP_Post $post ): void {
 		/**
 		 * Checks if the post is allowed to be posted to Discord.
 		 *
