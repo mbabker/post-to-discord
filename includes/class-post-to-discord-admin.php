@@ -80,7 +80,7 @@ final class Post_To_Discord_Admin {
 		add_options_page(
 			__( 'Post to Discord', 'post-to-discord' ),
 			__( 'Post to Discord', 'post-to-discord' ),
-			'administrator',
+			'manage_options',
 			'post-to-discord',
 			[ $this, 'show_settings_page' ],
 		);
@@ -105,6 +105,9 @@ final class Post_To_Discord_Admin {
 			[ $this, 'print_bot_username_field' ],
 			'post-to-discord',
 			'post-to-discord-general-settings',
+			[
+				'label_for' => 'post_to_discord_bot_username',
+			],
 		);
 
 		add_settings_field(
@@ -113,6 +116,9 @@ final class Post_To_Discord_Admin {
 			[ $this, 'print_avatar_url_field' ],
 			'post-to-discord',
 			'post-to-discord-general-settings',
+			[
+				'label_for' => 'post_to_discord_bot_avatar_url',
+			],
 		);
 
 		add_settings_field(
@@ -121,6 +127,9 @@ final class Post_To_Discord_Admin {
 			[ $this, 'print_webhook_url_field' ],
 			'post-to-discord',
 			'post-to-discord-general-settings',
+			[
+				'label_for' => 'post_to_discord_webhook_url',
+			],
 		);
 
 		add_settings_field(
@@ -129,6 +138,9 @@ final class Post_To_Discord_Admin {
 			[ $this, 'print_mention_everyone_field' ],
 			'post-to-discord',
 			'post-to-discord-general-settings',
+			[
+				'label_for' => 'post_to_discord_mention_everyone',
+			],
 		);
 
 		add_settings_field(
@@ -137,6 +149,9 @@ final class Post_To_Discord_Admin {
 			[ $this, 'print_message_template_field' ],
 			'post-to-discord',
 			'post-to-discord-general-settings',
+			[
+				'label_for' => 'post_to_discord_message_template',
+			],
 		);
 
 		add_settings_field(
@@ -145,6 +160,9 @@ final class Post_To_Discord_Admin {
 			[ $this, 'print_supported_post_types_field' ],
 			'post-to-discord',
 			'post-to-discord-general-settings',
+			[
+				'label_for' => 'post_to_discord_supported_post_types',
+			],
 		);
 	}
 

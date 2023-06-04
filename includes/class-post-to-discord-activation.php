@@ -95,22 +95,39 @@ final class Post_To_Discord_Activation {
 	 * Set the default options for the plugin.
 	 */
 	private function set_default_options(): void {
-		$post_types = [];
-
-		if ( post_type_exists( 'post' ) ) {
-			$post_types[] = 'post';
+		if ( false === get_option( 'post_to_discord_bot_username', false ) ) {
+			add_option( 'post_to_discord_bot_username', '', '', false );
 		}
 
-		if ( post_type_exists( 'page' ) ) {
-			$post_types[] = 'page';
+		if ( false === get_option( 'post_to_discord_bot_avatar_url', false ) ) {
+			add_option( 'post_to_discord_bot_avatar_url', '', '', false );
 		}
 
-		add_option( 'post_to_discord_bot_username', '', '', false );
-		add_option( 'post_to_discord_bot_avatar_url', '', '', false );
-		add_option( 'post_to_discord_webhook_url', '', '', false );
-		add_option( 'post_to_discord_mention_everyone', '', '', false );
-		add_option( 'post_to_discord_message_template', 'New %post_type% "%title%" by "%author%" (%url%)', '', false );
-		add_option( 'post_to_discord_supported_post_types', $post_types, '', false );
+		if ( false === get_option( 'post_to_discord_webhook_url', false ) ) {
+			add_option( 'post_to_discord_webhook_url', '', '', false );
+		}
+
+		if ( false === get_option( 'post_to_discord_mention_everyone', false ) ) {
+			add_option( 'post_to_discord_mention_everyone', '', '', false );
+		}
+
+		if ( false === get_option( 'post_to_discord_message_template', false ) ) {
+			add_option( 'post_to_discord_message_template', 'New %post_type% "%title%" by "%author%" (%url%)', '', false );
+		}
+
+		if ( false === get_option( 'post_to_discord_supported_post_types', false ) ) {
+			$post_types = [];
+
+			if ( post_type_exists( 'post' ) ) {
+				$post_types[] = 'post';
+			}
+
+			if ( post_type_exists( 'page' ) ) {
+				$post_types[] = 'page';
+			}
+
+			add_option( 'post_to_discord_supported_post_types', $post_types, '', false );
+		}
 	}
 
 	/**
