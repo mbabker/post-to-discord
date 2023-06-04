@@ -5,7 +5,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Allowed Shortcodes admin class.
+ * Post to Discord admin class.
  *
  * Manages the WordPress admin integrations.
  */
@@ -116,7 +116,7 @@ final class Post_To_Discord_Admin {
 		);
 
 		add_settings_field(
-			'post_to_discord_bot_webhook_url',
+			'post_to_discord_webhook_url',
 			__( 'Webhook URL', 'post-to-discord' ),
 			[ $this, 'print_webhook_url_field' ],
 			'post-to-discord',
@@ -183,8 +183,8 @@ final class Post_To_Discord_Admin {
 	 */
 	public function print_webhook_url_field( array $args ): void {
 		echo sprintf(
-			'<input type="url" id="post_to_discord_bot_webhook_url" name="post_to_discord_bot_webhook_url" class="regular-text code" value="%s" />',
-			esc_attr( get_option( 'post_to_discord_bot_webhook_url', '' ) )
+			'<input type="url" id="post_to_discord_webhook_url" name="post_to_discord_webhook_url" class="regular-text code" value="%s" />',
+			esc_attr( get_option( 'post_to_discord_webhook_url', '' ) )
 		);
 
 		echo sprintf(

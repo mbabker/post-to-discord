@@ -107,7 +107,7 @@ final class Post_To_Discord_Activation {
 
 		add_option( 'post_to_discord_bot_username', '', '', false );
 		add_option( 'post_to_discord_bot_avatar_url', '', '', false );
-		add_option( 'post_to_discord_bot_webhook_url', '', '', false );
+		add_option( 'post_to_discord_webhook_url', '', '', false );
 		add_option( 'post_to_discord_mention_everyone', '', '', false );
 		add_option( 'post_to_discord_message_template', 'New %post_type% "%title%" by "%author%" (%url%)', '', false );
 		add_option( 'post_to_discord_supported_post_types', $post_types, '', false );

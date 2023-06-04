@@ -5,7 +5,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Allowed Shortcodes plugin class.
+ * Post to Discord plugin class.
  *
  * Responsible for initializing the plugin and its resources.
  */
@@ -52,6 +52,7 @@ final class Post_To_Discord_Plugin {
 
 	private function boot_integration_classes(): void {
 		Post_To_Discord_Activation::boot();
+		Post_To_Discord_Publisher::boot();
 
 		if ( is_admin() ) {
 			Post_To_Discord_Admin::boot();
