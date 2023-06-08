@@ -151,11 +151,15 @@ final class Post_To_Discord_Publisher {
 			return false;
 		}
 
-		$post_date    = get_post_datetime( $post, 'date', 'gmt' );
-		$current_time = new DateTimeImmutable( 'now', wp_timezone() );
+		$post_date = get_post_datetime( $post, 'date', 'gmt' );
+
+		// If we can't get the post date, assume the post is publishable
+		if ( false === $post_date ) {
+			return true;
+		}
 
 		// Don't publish until the post time has passed
-		return $current_time >= $post_date;
+		return new DateTimeImmutable( 'now', wp_timezone() ) >= $post_date;
 	}
 
 	private function already_published( WP_Post $post ): bool {
