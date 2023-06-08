@@ -151,8 +151,8 @@ final class Post_To_Discord_Publisher {
 			return false;
 		}
 
-		$post_date    = date( 'Y-m-d H:i', strtotime( $post->post_date ) );
-		$current_time = current_time( 'Y-m-d H:i' );
+		$post_date    = get_post_datetime( $post, 'date', 'gmt' );
+		$current_time = new DateTimeImmutable( 'now', wp_timezone() );
 
 		// Don't publish until the post time has passed
 		return $current_time >= $post_date;
