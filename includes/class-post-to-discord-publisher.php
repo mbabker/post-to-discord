@@ -135,7 +135,7 @@ final class Post_To_Discord_Publisher {
 
 		$code = wp_remote_retrieve_response_code( $response );
 
-		if ( '' !== $code && 300 < $code ) {
+		if ( '' !== $code && 200 <= $code && 300 > $code ) {
 			$this->add_published_meta( $post );
 		}
 	}
