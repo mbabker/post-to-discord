@@ -30,8 +30,12 @@ final class Post_To_Discord_Publisher {
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 
-			foreach ( get_option( 'post_to_discord_supported_post_types', [] ) as $post_type ) {
-				add_action( "publish_$post_type", [ self::$instance, 'publish_to_discord' ], 10, 2 );
+			$supported_post_types = get_option( 'post_to_discord_supported_post_types', [] );
+
+			if ( is_array( $supported_post_types ) ) {
+				foreach ( $supported_post_types as $post_type ) {
+					add_action( "publish_$post_type", [ self::$instance, 'publish_to_discord' ], 10, 2 );
+				}
 			}
 		}
 	}
