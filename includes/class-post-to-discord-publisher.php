@@ -293,17 +293,17 @@ final class Post_To_Discord_Publisher {
 
 		add_filter( 'excerpt_more', $excerpt_more_filter, 9999 );
 
-		/**
-		 * Filters the description for the embed.
-		 *
-		 * @param string  $description The description for the Discord embed.
-		 * @param WP_Post $post        The post being published.
-		 */
-		$description = apply_filters( 'post_to_discord_embed_description', wp_trim_excerpt( '', $post ), $post );
-
-		remove_filter( 'excerpt_more', $excerpt_more_filter );
-
-		return $description;
+		try {
+			/**
+			 * Filters the description for the embed.
+			 *
+			 * @param string  $description The description for the Discord embed.
+			 * @param WP_Post $post        The post being published.
+			 */
+			return apply_filters( 'post_to_discord_embed_description', wp_trim_excerpt( '', $post ), $post );
+		} finally {
+			remove_filter( 'excerpt_more', $excerpt_more_filter );
+		}
 	}
 
 	private function get_discord_post_author( WP_Post $post ): string {
