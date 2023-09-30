@@ -169,47 +169,47 @@ final class Post_To_Discord_Admin {
 	/**
 	 * Prints the bot username field.
 	 */
-	public function print_bot_username_field( array $args ): void {
-		echo sprintf(
+	public function print_bot_username_field(): void {
+		printf(
 			'<input type="text" id="post_to_discord_bot_username" name="post_to_discord_bot_username" class="regular-text code" value="%s" />',
 			esc_attr( get_option( 'post_to_discord_bot_username', '' ) )
 		);
 
-		echo sprintf(
+		printf(
 			'<p class="description">%s</p>',
-			__( 'The username for the bot account which posts to your Discord server.', 'post-to-discord' ),
+			esc_html__( 'The username for the bot account which posts to your Discord server.', 'post-to-discord' ),
 		);
 	}
 
 	/**
 	 * Prints the avatar URL field.
 	 */
-	public function print_avatar_url_field( array $args ): void {
-		echo sprintf(
+	public function print_avatar_url_field(): void {
+		printf(
 			'<input type="url" id="post_to_discord_bot_avatar_url" name="post_to_discord_bot_avatar_url" class="regular-text code" value="%s" />',
 			esc_attr( get_option( 'post_to_discord_bot_avatar_url', '' ) )
 		);
 
-		echo sprintf(
+		printf(
 			'<p class="description">%s</p>',
-			__( 'An optional URL for the bot avatar.', 'post-to-discord' ),
+			esc_html__( 'An optional URL for the bot avatar.', 'post-to-discord' ),
 		);
 	}
 
 	/**
 	 * Prints the webhook URL field.
 	 */
-	public function print_webhook_url_field( array $args ): void {
-		echo sprintf(
+	public function print_webhook_url_field(): void {
+		printf(
 			'<input type="url" id="post_to_discord_webhook_url" name="post_to_discord_webhook_url" class="regular-text code" value="%s" />',
 			esc_attr( get_option( 'post_to_discord_webhook_url', '' ) )
 		);
 
-		echo sprintf(
+		printf(
 			'<p class="description">%s</p>',
 			sprintf(
 				/* translators: Link to Discord "Intro to Webhooks" article. */
-				__( 'The webhook URL to execute, learn more <a href="%s">on Discord</a>.', 'post-to-discord' ),
+				__( 'The webhook URL to execute, learn more <a href="%s">on Discord</a>.', 'post-to-discord' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				'https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks',
 			),
 		);
@@ -218,19 +218,19 @@ final class Post_To_Discord_Admin {
 	/**
 	 * Prints the mention everyone field.
 	 */
-	public function print_mention_everyone_field( array $args ): void {
-		echo sprintf(
+	public function print_mention_everyone_field(): void {
+		printf(
 			'<label for="mention_everyone"><input type="checkbox" id="mention_everyone" name="post_to_discord_mention_everyone" value="yes"%1$s /> %2$s</label><br />',
 			'yes' === strtolower( get_option( 'post_to_discord_mention_everyone', '' ) ) ? ' checked' : '',
-			__( 'Mention @everyone when sending the message to Discord.', 'post-to-discord' ),
+			esc_html__( 'Mention @everyone when sending the message to Discord.', 'post-to-discord' ),
 		);
 	}
 
 	/**
 	 * Prints the message template field.
 	 */
-	public function print_message_template_field( array $args ): void {
-		echo sprintf(
+	public function print_message_template_field(): void {
+		printf(
 			'<textarea id="post_to_discord_message_template" name="post_to_discord_message_template" class="large-text code" rows="4" placeholder="%s">%s</textarea>',
 			esc_attr(
 				sprintf(
@@ -245,11 +245,11 @@ final class Post_To_Discord_Admin {
 			esc_textarea( get_option( 'post_to_discord_message_template', '' ) )
 		);
 
-		echo sprintf(
+		printf(
 			'<p class="description">%s</p>',
 			sprintf(
 				/* Translators: 1: %post_type% code placeholder, 2: %title% code placeholder, 3: %author% code placeholder, 4: %url% code placeholder */
-				__( 'Customize the message template for messages sent to Discord. Supported placeholders are %1$s, %2$s, %3$s, and %4$s. HTML is not allowed.', 'post-to-discord' ),
+				esc_html__( 'Customize the message template for messages sent to Discord. Supported placeholders are %1$s, %2$s, %3$s, and %4$s. HTML is not allowed.', 'post-to-discord' ),
 				'%post_type%',
 				'%title%',
 				'%author%',
@@ -263,27 +263,27 @@ final class Post_To_Discord_Admin {
 	 *
 	 * @global array $wp_post_types List of post types.
 	 */
-	public function print_supported_post_types_field( array $args ): void {
+	public function print_supported_post_types_field(): void {
 		global $wp_post_types;
 
 		$supported_post_types = get_option( 'post_to_discord_supported_post_types', [] );
 
-		echo sprintf(
+		printf(
 			'<p class="description">%s</p>',
-			__( 'The list of post types which will trigger a Discord webhook when they are published.', 'post-to-discord' ),
+			esc_html__( 'The list of post types which will trigger a Discord webhook when they are published.', 'post-to-discord' ),
 		);
 
-		echo sprintf(
+		printf(
 			'<fieldset><legend class="screen-reader-text">%s</legend>',
-			__( 'Supported Post Types', 'post-to-discord' ),
+			esc_html__( 'Supported Post Types', 'post-to-discord' ),
 		);
 
 		foreach ( array_keys( $wp_post_types ) as $post_type ) {
-			echo sprintf(
+			printf(
 				'<label for="post_type_%1$s"><input type="checkbox" id="post_type_%1$s" name="post_to_discord_supported_post_types[]" value="%1$s"%2$s /> %3$s</label><br />',
 				esc_attr( $post_type ),
 				in_array( $post_type, $supported_post_types, true ) ? ' checked' : '',
-				get_post_type_object( $post_type )->label,
+				esc_html( get_post_type_object( $post_type )->label ),
 			);
 		}
 

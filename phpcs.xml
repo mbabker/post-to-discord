@@ -11,7 +11,7 @@
 
     <!-- These rules come from the WordPress coding standards -->
     <rule ref="WordPress-Extra">
-        <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
         <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
     </rule>
 

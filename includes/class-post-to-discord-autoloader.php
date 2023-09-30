@@ -64,17 +64,17 @@ final class Post_To_Discord_Autoloader {
 	/**
 	 * Autoload function for plugin classes.
 	 *
-	 * @param string $class Class name.
+	 * @param string $class_name Class name.
 	 */
-	public function autoload( string $class ): void {
-		$class = strtolower( $class );
+	public function autoload( string $class_name ): void {
+		$class_name = strtolower( $class_name );
 
 		// Only attempt to load classes if they look like they come from this plugin
-		if ( strpos( $class, 'post_to_discord_' ) !== 0 ) {
+		if ( strpos( $class_name, 'post_to_discord_' ) !== 0 ) {
 			return;
 		}
 
-		$file = $this->get_file_name_from_class_name( $class );
+		$file = $this->get_file_name_from_class_name( $class_name );
 
 		$this->include_file_if_readable( $this->include_path . $file );
 	}
@@ -82,10 +82,10 @@ final class Post_To_Discord_Autoloader {
 	/**
 	 * Take a class name and turn it into a file name.
 	 *
-	 * @param string $class Class name.
+	 * @param string $class_name Class name.
 	 */
-	private function get_file_name_from_class_name( string $class ): string {
-		return 'class-' . str_replace( '_', '-', $class ) . '.php';
+	private function get_file_name_from_class_name( string $class_name ): string {
+		return 'class-' . str_replace( '_', '-', $class_name ) . '.php';
 	}
 
 	/**

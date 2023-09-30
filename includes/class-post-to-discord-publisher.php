@@ -218,14 +218,14 @@ final class Post_To_Discord_Publisher {
 		if ( ! empty( get_the_category_list() ) ) {
 			$embed['fields'][] = [
 				'name'  => esc_html( get_taxonomy( 'category' )->labels->name ),
-				'value' => strip_tags( get_the_category_list( ', ', '', $post->ID ) ),
+				'value' => wp_strip_all_tags( get_the_category_list( ', ', '', $post->ID ) ),
 			];
 		}
 
 		if ( ! empty( get_the_tag_list() ) ) {
 			$embed['fields'][] = [
 				'name'  => esc_html( get_taxonomy( 'post_tag' )->labels->name ),
-				'value' => strip_tags( get_the_tag_list( '', ', ', '', $post->ID ) ),
+				'value' => wp_strip_all_tags( get_the_tag_list( '', ', ', '', $post->ID ) ),
 			];
 		}
 
@@ -285,7 +285,7 @@ final class Post_To_Discord_Publisher {
 	}
 
 	private function get_discord_embed_description( WP_Post $post ): string {
-		$excerpt_more_filter = static fn ( string $more_string ): string => ' ...';
+		$excerpt_more_filter = static fn (): string => ' ...';
 
 		add_filter( 'excerpt_more', $excerpt_more_filter, 9999 );
 
@@ -304,18 +304,18 @@ final class Post_To_Discord_Publisher {
 
 	private function get_discord_post_author( WP_Post $post ): string {
 		/** This filter is documented in wp-includes/author-template.php */
-		return apply_filters( 'the_author', get_user_by( 'ID', $post->post_author )->display_name );
+		return apply_filters( 'the_author', get_user_by( 'ID', $post->post_author )->display_name ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
 
 	private function format_embeds_for_discord( array $embeds ): array {
 		return array_map(
-			static function (array $embed): array {
+			static function ( array $embed ): array {
 				$formatted = [
 					'title'       => $embed['title'] ?? '',
 					'type'        => 'rich',
 					'description' => $embed['description'] ?? '',
 					'url'         => $embed['url'] ?? site_url(),
-					'timestamp'   => $embed['timestamp'] ?? date( 'c' ),
+					'timestamp'   => $embed['timestamp'] ?? date( 'c' ), // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 					'footer'      => [
 						'text'     => get_bloginfo( 'name' ),
 						'icon_url' => get_site_icon_url(),
