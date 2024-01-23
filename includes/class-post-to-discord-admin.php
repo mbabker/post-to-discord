@@ -279,11 +279,17 @@ final class Post_To_Discord_Admin {
 		);
 
 		foreach ( array_keys( $wp_post_types ) as $post_type ) {
+			$post_type_object = get_post_type_object( $post_type );
+
+			if ( null === $post_type_object || ! $post_type_object->public ) {
+				continue;
+			}
+
 			printf(
 				'<label for="post_type_%1$s"><input type="checkbox" id="post_type_%1$s" name="post_to_discord_supported_post_types[]" value="%1$s"%2$s /> %3$s</label><br />',
 				esc_attr( $post_type ),
 				in_array( $post_type, $supported_post_types, true ) ? ' checked' : '',
-				esc_html( get_post_type_object( $post_type )->label ),
+				esc_html( $post_type_object->label ),
 			);
 		}
 
