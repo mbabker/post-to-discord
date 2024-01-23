@@ -68,7 +68,11 @@ final class Post_To_Discord_Admin {
 		return array_merge(
 			$actions,
 			[
-				'settings' => '<a href="' . esc_url( admin_url( 'options-general.php?page=post-to-discord' ) ) . '">' . esc_html__( 'Settings', 'post-to-discord' ) . '</a>',
+				'settings' => sprintf(
+					'<a href="%s">%s</a>',
+					esc_url( admin_url( 'options-general.php?page=post-to-discord' ) ),
+					esc_html__( 'Settings', 'post-to-discord' ),
+				),
 			],
 		);
 	}
