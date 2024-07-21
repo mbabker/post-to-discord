@@ -14,7 +14,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  * Requires at least: 6.2
  * Requires PHP: 7.4
- * Tested up to: 6.4
+ * Tested up to: 6.6
  */
 
 // If this file is called directly, abort.
