@@ -15,6 +15,14 @@
         <exclude name="WordPress.PHP.YodaConditions.NotYoda" />
     </rule>
 
+    <rule ref="WordPress.Files.FileName.InvalidClassFileName">
+        <exclude-pattern>src/</exclude-pattern>
+    </rule>
+
+    <rule ref="WordPress.Files.FileName.NotHyphenatedLowercase">
+        <exclude-pattern>src/</exclude-pattern>
+    </rule>
+
     <!-- These rules come from the PHPCompatibility coding standards -->
     <config name="testVersion" value="7.4-" />
     <rule ref="PHPCompatibilityWP" />
@@ -22,12 +30,16 @@
     <!-- Verify that everything in the global namespace is prefixed with a plugin specific prefix. -->
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="post_to_discord_" />
+            <property name="prefixes" type="array" value="BabDev\PostToDiscord">
+                <element value="BabDev\PostToDiscord" />
+                <element value="post_to_discord_" />
+            </property>
         </properties>
     </rule>
 
     <!-- Define files to be checked -->
     <file>includes/</file>
+    <file>src/</file>
     <file>views/</file>
     <file>post-to-discord.php</file>
 </ruleset>

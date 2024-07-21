@@ -1,5 +1,7 @@
 <?php
 
+namespace BabDev\PostToDiscord;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -9,11 +11,11 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * Responsible for initializing the plugin and its resources.
  */
-final class Post_To_Discord_Plugin {
+final class Plugin {
 	/**
 	 * Singleton instance of the plugin
 	 */
-	private static ?Post_To_Discord_Plugin $instance = null;
+	private static ?self $instance = null;
 
 	/**
 	 * Plugin constructor.
@@ -40,22 +42,22 @@ final class Post_To_Discord_Plugin {
 	 *
 	 * Ensures only one instance of the plugin is loaded or can be loaded.
 	 *
-	 * @throws RuntimeException if trying to fetch the singleton instance before the plugin has been booted.
+	 * @throws \RuntimeException if trying to fetch the singleton instance before the plugin has been booted.
 	 */
 	public static function instance(): self {
 		if ( self::$instance === null ) {
-			throw new RuntimeException( 'The "Post to Discord" plugin has not been booted.' );
+			throw new \RuntimeException( 'The "Post to Discord" plugin has not been booted.' );
 		}
 
 		return self::$instance;
 	}
 
 	private function boot_integration_classes(): void {
-		Post_To_Discord_Activation::boot();
-		Post_To_Discord_Publisher::boot();
+		Activation::boot();
+		Publisher::boot();
 
 		if ( is_admin() ) {
-			Post_To_Discord_Admin::boot();
+			Admin::boot();
 		}
 	}
 }

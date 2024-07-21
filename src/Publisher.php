@@ -1,5 +1,7 @@
 <?php
 
+namespace BabDev\PostToDiscord;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -9,11 +11,11 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * Processes the Discord webhook.
  */
-final class Post_To_Discord_Publisher {
+final class Publisher {
 	/**
 	 * Singleton instance of the integration
 	 */
-	private static ?Post_To_Discord_Publisher $instance = null;
+	private static ?self $instance = null;
 
 	/**
 	 * Integration constructor.
@@ -45,11 +47,11 @@ final class Post_To_Discord_Publisher {
 	 *
 	 * Ensures only one instance of the integration is loaded or can be loaded.
 	 *
-	 * @throws RuntimeException if trying to fetch the singleton instance before the integration has been booted.
+	 * @throws \RuntimeException if trying to fetch the singleton instance before the integration has been booted.
 	 */
 	public static function instance(): self {
 		if ( self::$instance === null ) {
-			throw new RuntimeException( 'The "Post to Discord" publisher integration has not been booted.' );
+			throw new \RuntimeException( 'The "Post to Discord" publisher integration has not been booted.' );
 		}
 
 		return self::$instance;
@@ -58,15 +60,15 @@ final class Post_To_Discord_Publisher {
 	/**
 	 * Publishes the post to Discord.
 	 *
-	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post object.
 	 */
-	public function publish_to_discord( int $post_id, WP_Post $post ): void {
+	public function publish_to_discord( int $post_id, \WP_Post $post ): void {
 		/**
 		 * Checks if the post is allowed to be posted to Discord.
 		 *
 		 * @param bool    $is_allowed_to_publish Flag indicating the post is allowed to be published to Discord.
-		 * @param WP_Post $post                  The post being published.
+		 * @param \WP_Post $post                  The post being published.
 		 */
 		$is_allowed_to_publish = apply_filters( 'post_to_discord_is_allowed_to_publish', $this->is_publishable( $post ), $post );
 
@@ -98,8 +100,8 @@ final class Post_To_Discord_Publisher {
 		/**
 		 * Filters the request body for the webhook message.
 		 *
-		 * @param array   $request_body The request body.
-		 * @param WP_Post $post         The post being published.
+		 * @param array    $request_body The request body.
+		 * @param \WP_Post $post         The post being published.
 		 */
 		$request_body = apply_filters( 'post_to_discord_request_body', $request_body, $post );
 
@@ -113,17 +115,17 @@ final class Post_To_Discord_Publisher {
 		/**
 		 * Filters the request payload for the webhook message.
 		 *
-		 * @param array   $request The request payload.
-		 * @param WP_Post $post    The post being published.
+		 * @param array    $request The request payload.
+		 * @param \WP_Post $post    The post being published.
 		 */
 		$request = apply_filters( 'post_to_discord_request', $request, $post );
 
 		/**
 		 * Fires before the request is sent to the webhook endpoint.
 		 *
-		 * @param array   $request The request payload.
-		 * @param string  $webhook The webhook URL.
-		 * @param WP_Post $post    The post being published.
+		 * @param array    $request The request payload.
+		 * @param string   $webhook The webhook URL.
+		 * @param \WP_Post $post    The post being published.
 		 */
 		do_action( 'post_to_discord_before_request', $request, $webhook, $post );
 
@@ -132,8 +134,8 @@ final class Post_To_Discord_Publisher {
 		/**
 		 * Fires after the request is sent to the webhook endpoint.
 		 *
-		 * @param array|WP_Error $response The response or WP_Error on failure.
-		 * @param WP_Post        $post     The post being published.
+		 * @param array|\WP_Error $response The response or WP_Error on failure.
+		 * @param \WP_Post        $post     The post being published.
 		 */
 		do_action( 'post_to_discord_after_request', $response, $post );
 
@@ -144,7 +146,7 @@ final class Post_To_Discord_Publisher {
 		}
 	}
 
-	private function is_publishable( WP_Post $post ): bool {
+	private function is_publishable( \WP_Post $post ): bool {
 		// If the post was previously published, don't send it again
 		if ( $this->already_published( $post ) ) {
 			return false;
@@ -163,10 +165,10 @@ final class Post_To_Discord_Publisher {
 		}
 
 		// Don't publish until the post time has passed
-		return new DateTimeImmutable( 'now', wp_timezone() ) >= $post_date;
+		return new \DateTimeImmutable( 'now', wp_timezone() ) >= $post_date;
 	}
 
-	private function already_published( WP_Post $post ): bool {
+	private function already_published( \WP_Post $post ): bool {
 		if ( 'yes' === get_post_meta( $post->ID, '_post_to_discord_published', true ) ) {
 			return true;
 		}
@@ -175,7 +177,7 @@ final class Post_To_Discord_Publisher {
 		return 'yes' === get_post_meta( $post->ID, '_wp_discord_post_published', true );
 	}
 
-	private function get_discord_post_message( WP_Post $post ): string {
+	private function get_discord_post_message( \WP_Post $post ): string {
 		$mention_everyone = 'yes' === strtolower( get_option( 'post_to_discord_mention_everyone', '' ) );
 
 		$message_template = get_option( 'post_to_discord_message_template', '' );
@@ -202,13 +204,13 @@ final class Post_To_Discord_Publisher {
 		/**
 		 * Filters the message content to be posted to Discord.
 		 *
-		 * @param string  $message The message to post to Discord.
-		 * @param WP_Post $post    The post being published.
+		 * @param string   $message The message to post to Discord.
+		 * @param \WP_Post $post    The post being published.
 		 */
 		return apply_filters( 'post_to_discord_message', $message, $post );
 	}
 
-	private function get_discord_post_embeds( WP_Post $post ): array {
+	private function get_discord_post_embeds( \WP_Post $post ): array {
 		$embed = [
 			'title'       => html_entity_decode( get_the_title( $post ) ),
 			'description' => $this->get_discord_embed_description( $post ),
@@ -236,43 +238,43 @@ final class Post_To_Discord_Publisher {
 		/**
 		 * Filters the list of embed objects for the Discord message.
 		 *
-		 * @param array   $embeds The list of embed objects for the Discord message.
-		 * @param WP_Post $post   The post being published.
+		 * @param array    $embeds The list of embed objects for the Discord message.
+		 * @param \WP_Post $post   The post being published.
 		 */
 		return apply_filters( 'post_to_discord_embeds', [ $embed ], $post );
 	}
 
-	private function get_discord_post_username( WP_Post $post ): string {
+	private function get_discord_post_username( \WP_Post $post ): string {
 		/**
 		 * Filters the username for the bot account to post to Discord as.
 		 *
-		 * @param string  $username The username for the bot account to post to Discord as
-		 * @param WP_Post $post     The post being published.
+		 * @param string   $username The username for the bot account to post to Discord as
+		 * @param \WP_Post $post     The post being published.
 		 */
 		return apply_filters( 'post_to_discord_bot_username', get_option( 'post_to_discord_bot_username', '' ), $post );
 	}
 
-	private function get_discord_post_avatar( WP_Post $post ): string {
+	private function get_discord_post_avatar( \WP_Post $post ): string {
 		/**
 		 * Filters the URL for the bot account's Discord avatar.
 		 *
-		 * @param string  $avatar The URL for the bot account's Discord avatar.
-		 * @param WP_Post $post   The post being published.
+		 * @param string   $avatar The URL for the bot account's Discord avatar.
+		 * @param \WP_Post $post   The post being published.
 		 */
 		return apply_filters( 'post_to_discord_bot_avatar_url', get_option( 'post_to_discord_bot_avatar_url', '' ), $post );
 	}
 
-	private function get_discord_post_webhook( WP_Post $post ): string {
+	private function get_discord_post_webhook( \WP_Post $post ): string {
 		/**
 		 * Filters the Discord webhook URL.
 		 *
-		 * @param string  $webhook_url The Discord webhook URL.
-		 * @param WP_Post $post        The post being published.
+		 * @param string   $webhook_url The Discord webhook URL.
+		 * @param \WP_Post $post        The post being published.
 		 */
 		return apply_filters( 'post_to_discord_webhook_url', get_option( 'post_to_discord_webhook_url', '' ), $post );
 	}
 
-	private function get_discord_embed_thumbnail( WP_Post $post ): string {
+	private function get_discord_embed_thumbnail( \WP_Post $post ): string {
 		if ( false === has_post_thumbnail( $post ) ) {
 			return '';
 		}
@@ -280,15 +282,15 @@ final class Post_To_Discord_Publisher {
 		/**
 		 * Filters the image size for the embed thumbnail.
 		 *
-		 * @param string  $size The image size for the embed thumbnail.
-		 * @param WP_Post $post The post being published.
+		 * @param string   $size The image size for the embed thumbnail.
+		 * @param \WP_Post $post The post being published.
 		 */
 		$size = apply_filters( 'post_to_discord_embed_thumbnail_size', 'full', $post );
 
 		return wp_get_attachment_image_url( get_post_thumbnail_id( $post ), $size );
 	}
 
-	private function get_discord_embed_description( WP_Post $post ): string {
+	private function get_discord_embed_description( \WP_Post $post ): string {
 		$excerpt_more_filter = static fn (): string => ' ...';
 
 		add_filter( 'excerpt_more', $excerpt_more_filter, 9999 );
@@ -297,8 +299,8 @@ final class Post_To_Discord_Publisher {
 			/**
 			 * Filters the description for the embed.
 			 *
-			 * @param string  $description The description for the Discord embed.
-			 * @param WP_Post $post        The post being published.
+			 * @param string   $description The description for the Discord embed.
+			 * @param \WP_Post $post        The post being published.
 			 */
 			return apply_filters( 'post_to_discord_embed_description', wp_trim_excerpt( '', $post ), $post );
 		} finally {
@@ -306,7 +308,7 @@ final class Post_To_Discord_Publisher {
 		}
 	}
 
-	private function get_discord_post_author( WP_Post $post ): string {
+	private function get_discord_post_author( \WP_Post $post ): string {
 		/** This filter is documented in wp-includes/author-template.php */
 		return apply_filters( 'the_author', get_user_by( 'ID', $post->post_author )->display_name ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 	}
@@ -342,7 +344,7 @@ final class Post_To_Discord_Publisher {
 		);
 	}
 
-	private function add_published_meta( WP_Post $post ): void {
+	private function add_published_meta( \WP_Post $post ): void {
 		add_post_meta( $post->ID, '_post_to_discord_published', 'yes', true );
 	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+namespace BabDev\PostToDiscord;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -9,11 +11,11 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * Responsible for registering hooks to run when the plugin is activated, deactivated, and checking for post-update actions.
  */
-final class Post_To_Discord_Activation {
+final class Activation {
 	/**
 	 * Singleton instance of the integration
 	 */
-	private static ?Post_To_Discord_Activation $instance = null;
+	private static ?self $instance = null;
 
 	/**
 	 * Integration constructor.
@@ -30,7 +32,7 @@ final class Post_To_Discord_Activation {
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 
-			register_activation_hook( POST_TO_DISCORD_PLUGIN_FILE, [ self::$instance, 'install' ] );
+			register_activation_hook( PLUGIN_FILE, [ self::$instance, 'install' ] );
 			add_action( 'init', [ self::$instance, 'check_and_update_plugin' ] );
 		}
 	}
@@ -40,11 +42,11 @@ final class Post_To_Discord_Activation {
 	 *
 	 * Ensures only one instance of the integration is loaded or can be loaded.
 	 *
-	 * @throws RuntimeException if trying to fetch the singleton instance before the integration has been booted.
+	 * @throws \RuntimeException if trying to fetch the singleton instance before the integration has been booted.
 	 */
 	public static function instance(): self {
 		if ( self::$instance === null ) {
-			throw new RuntimeException( 'The "Post to Discord" activation integration has not been booted.' );
+			throw new \RuntimeException( 'The "Post to Discord" activation integration has not been booted.' );
 		}
 
 		return self::$instance;
@@ -54,7 +56,7 @@ final class Post_To_Discord_Activation {
 	 * Ensures the plugin is updated and applies updates if necessary.
 	 */
 	public function check_and_update_plugin(): void {
-		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'post_to_discord_version' ), POST_TO_DISCORD_VERSION, '<' ) ) {
+		if ( ! defined( 'IFRAME_REQUEST' ) && version_compare( get_option( 'post_to_discord_version' ), VERSION, '<' ) ) {
 			$this->install();
 
 			/**
@@ -135,6 +137,6 @@ final class Post_To_Discord_Activation {
 	 */
 	private function update_plugin_version(): void {
 		delete_option( 'post_to_discord_version' );
-		add_option( 'post_to_discord_version', POST_TO_DISCORD_VERSION, '', false );
+		add_option( 'post_to_discord_version', VERSION, '', false );
 	}
 }

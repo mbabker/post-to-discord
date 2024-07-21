@@ -1,5 +1,7 @@
 <?php
 
+namespace BabDev\PostToDiscord;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -9,11 +11,11 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * Manages the WordPress admin integrations.
  */
-final class Post_To_Discord_Admin {
+final class Admin {
 	/**
 	 * Singleton instance of the integration
 	 */
-	private static ?Post_To_Discord_Admin $instance = null;
+	private static ?self $instance = null;
 
 	/**
 	 * Integration constructor.
@@ -42,11 +44,11 @@ final class Post_To_Discord_Admin {
 	 *
 	 * Ensures only one instance of the integration is loaded or can be loaded.
 	 *
-	 * @throws RuntimeException if trying to fetch the singleton instance before the integration has been booted.
+	 * @throws \RuntimeException if trying to fetch the singleton instance before the integration has been booted.
 	 */
 	public static function instance(): self {
 		if ( self::$instance === null ) {
-			throw new RuntimeException( 'The "Post to Discord" admin integration has not been booted.' );
+			throw new \RuntimeException( 'The "Post to Discord" admin integration has not been booted.' );
 		}
 
 		return self::$instance;
@@ -61,7 +63,7 @@ final class Post_To_Discord_Admin {
 	 * @return string[] The filtered list of action links.
 	 */
 	public function modify_plugin_action_links( array $actions, string $plugin_file ): array {
-		if ( plugin_basename( POST_TO_DISCORD_PLUGIN_FILE ) !== $plugin_file ) {
+		if ( plugin_basename( PLUGIN_FILE ) !== $plugin_file ) {
 			return $actions;
 		}
 
@@ -306,6 +308,6 @@ final class Post_To_Discord_Admin {
 	 * @return void
 	 */
 	public function show_settings_page() {
-		include plugin_dir_path( POST_TO_DISCORD_PLUGIN_FILE ) . 'views/admin/html-page-plugin-settings.php';
+		include plugin_dir_path( PLUGIN_FILE ) . 'views/admin/html-page-plugin-settings.php';
 	}
 }
