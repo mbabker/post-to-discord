@@ -274,6 +274,10 @@ final class Admin {
 
 		$supported_post_types = get_option( 'post_to_discord_supported_post_types', [] );
 
+		if ( ! is_array( $supported_post_types ) ) {
+			$supported_post_types = [];
+		}
+
 		printf(
 			'<p class="description">%s</p>',
 			esc_html__( 'The list of post types which will trigger a Discord webhook when they are published.', 'post-to-discord' ),

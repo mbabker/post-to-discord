@@ -5,7 +5,7 @@
  * Plugin URI: https://michaels.website
  * Update URI: https://michaels.website
  * Description: WordPress plugin adding support for automatically sending messages to Discord when posts are published, based on the <a href="https://wordpress.org/plugins/wp-discord-post/">WP Discord Post</a> plugin.
- * Version: 0.3.0
+ * Version: 0.3.1
  * Author: Michael Babker
  * Author URI: https://michaels.website
  * Text Domain: post-to-discord
@@ -39,7 +39,7 @@ if ( ! \defined( __NAMESPACE__ . '\\VERSION' ) ) {
 	 *
 	 * @var string
 	 */
-	\define( __NAMESPACE__ . '\\VERSION', '0.3.0' );
+	\define( __NAMESPACE__ . '\\VERSION', '0.3.1' );
 }
 
 /**
